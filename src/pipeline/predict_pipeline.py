@@ -22,8 +22,8 @@ class PredictPipeline:
         try:
             
 
-            transformer_path = os.path.join('artifacts', 'transformer.pkl')
-            model_path = os.path.join('artifacts', 'model.pkl')
+            transformer_path = os.path.join('artifact', 'data_transform.pkl')
+            model_path = os.path.join('artifact', 'model.pkl')
 
             transformer = load_pickle_obj(transformer_path)
             model = load_pickle_obj(model_path)
@@ -79,7 +79,7 @@ class CustomData:
                 'Antral_Follicle_Count': self.antral_follicle_count
             }
 
-            new_df = pd.DataFrame(new_data_point)   
+            new_df = pd.DataFrame(new_data_point, index=[0])   
             return new_df
 
         except Exception as e:

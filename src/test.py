@@ -4,9 +4,8 @@ import sys
 from src.exception import CustomException
 from src.logger import logging
 
-from src.components.data_ingestion import DataIngestion
-from src.components.data_transformation import DataTransformation
-from src.components.model_training import ModelTrainer
+from src.pipeline.train_pipeline import main
+from src.pipeline.predict_pipeline import CustomData, PredictPipeline
 
 
 
@@ -14,20 +13,29 @@ from src.components.model_training import ModelTrainer
 
 
 
-# Test Components
+# Test Train and Predict Pipelines
 if __name__ == '__main__':
 
     try:
-        logging.info("Test all components")
-        # Create Objects
-        data_ingestion_obj = DataIngestion()
-        data_transformation_obj = DataTransformation()
-        model_trainer_obj = ModelTrainer()
+        logging.info("Testing Satrt")
+        
+        # call train pipeline
+        main()
 
+        # Create New Data Point for Prediction
+        data = CustomData(
+            age=42,
+            bmi=15.5,
+            menstrual_irregularity=0,
+            testosterone_level=40.6,
+            antral_follicle_count=8
+        )
+        df = data.data_transform_in_df()
 
-        train_file, test_file = data_ingestion_obj.split_data()
-        train_data, test_data = data_transformation_obj.apply_transformation(train_file, test_file)
-        model_trainer_obj.initiate_model_training(train_data, test_data)
+        predict = PredictPipeline()
+        pcos_prediction = predict.make_prediction(df)
+
+        print(f'PCOS Prediction: {pcos_prediction}')
 
         logging.info('Testing Complete')
 
